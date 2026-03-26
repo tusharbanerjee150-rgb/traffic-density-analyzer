@@ -3,7 +3,7 @@ import cv2
 # Load video
 cap = cv2.VideoCapture("data/traffic.mp4")
 
-# Load car classifier
+# Load car cascade
 car_cascade = cv2.CascadeClassifier("haarcascade_car.xml")
 
 # Check if video loaded
@@ -16,7 +16,7 @@ print("✅ Video loaded successfully")
 while True:
     ret, frame = cap.read()
 
-    # 🔥 Important fix (prevents crash)
+    # Stop if video ends
     if not ret:
         break
 
@@ -28,7 +28,7 @@ while True:
 
     car_count = 0
 
-    # Loop through detected cars
+    # Loop through detections
     for (x, y, w, h) in cars:
         # Filter unwanted detections
         if w < 60 or h < 60 or w > 300 or h > 300:
@@ -54,10 +54,10 @@ while True:
     cv2.putText(frame, f"Density: {density}", (10, 70),
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
 
-    # Show video
+    # Show output
     cv2.imshow("Traffic Analyzer", frame)
 
-    # Press ESC to exit
+    # Exit on ESC key
     if cv2.waitKey(25) == 27:
         break
 
